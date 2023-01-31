@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%load static%} <!--css, js, images 로딩 최상단에 위치!-->
+    <link rel="stylesheet" type="text/css" href="{%static 'style.css'%}">
+    <!--Bootstrap-->
+    <link rel="stylesheet" type="text/css" href="{%static 'bootstrap.min.css'%}">
+    <title>Title</title>
+</head>
+<body>
+<!--container-->
+<div class="container">
+    <!--제목-->
+    <div class="text-start mb-5">
+        <p><a href="/pybo/boot/menu">임시메뉴</a></p>
+        <h2 class="p-5">질문등록</h2>
+    </div>
+    <!--제목 end-->
+    <!--button-->
+    <div class="d-grid gap-2 d-md-flex justify-content-end mb-5">
+        <input type="button" class="btn btn-primary btn-sm" value="목록">
+        <input type="button" class="btn btn-primary btn-sm" value="등록">
+    </div>
+    <!--button end-->
+    <!--등록 form-->
+    <form action="#">
+        <div class="mb-3 row">
+            <label for="subject" class="col-sm-2 col-md-2 col-lg-2 col-form-label">제목</label>
+            <div class="col-sm-10 col-md-10 col-lg-10">
+                <input type="text" class="form-control" id="subject" name="subject">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="reg_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">등록자</label>
+            <div class="col-sm-10 col-md-10 col-lg-10">
+                <input type="text" readonly class="form-control" id="reg_id" name="reg_id">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="content" class="col-sm-2 col-md-2 col-lg-2 col-form-label">내용</label>
+            <div class="col-sm-10 col-md-10 col-lg-10">
+                <textarea name="content" id="content" cols="20" rows="10" class="form-control"></textarea>
+            </div>
+        </div>
+
+    </form>
+    <!--등록 form end-->
+</div>
+<!--container end-->
+</body>
+</html>
