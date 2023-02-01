@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.utils import timezone
 from .models import Question
-from .forms import QuestionForm
+from .forms import QuestionForm, AnswerForm
 
 
 # Create your views here.
@@ -24,10 +24,25 @@ def boot_list(request):
 
 
 def answer_create(request, question_id):
+    """답변등록"""
     print('answer_create question_id:{}'.format(question_id))
     question = get_object_or_404(Question, pk=question_id)
-    question.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
-    return redirect('pybo:detail', question_id=question_id)
+    if request.method == 'POST':
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.question = question
+            answer.create_date = timezone.now()
+            answer.save()
+            return redirect('pybo:detail', question_id=question_id)
+    else:
+        return HttpResponseNotAllowed('Post만 가능합니다.')
+
+    # form validation
+    context = {'question': question, 'form': form}
+    return render(request, 'pybo/question_detail.html', context)
+    # Question 과 Answer 처럼 서로 연결되어 있는 경우
+    # 연결모델명_set 연결데이터를 조회할 수 있다.
 
 
 def question_create(request):
