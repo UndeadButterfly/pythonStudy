@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.utils import timezone
 from .models import Question
 from .forms import QuestionForm, AnswerForm
+import logging
 
 
 # Create your views here.
@@ -25,7 +26,7 @@ def boot_list(request):
 
 def answer_create(request, question_id):
     """답변등록"""
-    print('answer_create question_id:{}'.format(question_id))
+    logging.info('answer_create question_id:{}'.format(question_id))
     question = get_object_or_404(Question, pk=question_id)
     if request.method == 'POST':
         form = AnswerForm(request.POST)
@@ -48,15 +49,15 @@ def answer_create(request, question_id):
 def question_create(request):
     """질문등록"""
 
-    print('1.request.method:{}'.format(request.method))
+    logging.info('1.request.method:{}'.format(request.method))
     if request.method == 'POST':
-        print('2.question_create post')
+        logging.info('2.question_create post')
         # 저장
         form = QuestionForm(request.POST)  # request.POST 데이터(subject, content 자동 생성)
-        print('3.question_create post')
+        logging.info('3.question_create post')
         # form(질문등록)이 유효하면
-        print('4.form.is_valid():{}'.format(form.is_valid()))
         if form.is_valid():
+            logging.info('4.form.is_valid():{}'.format(form.is_valid()))
             question = form.save(commit=False)  # subject, content 만 저장(commit 은 하지 않음)
             question.create_date = timezone.now()
             question.save()  # 날짜까지 생성해서 저장(Commit)
@@ -69,10 +70,10 @@ def question_create(request):
 
 def detail(request, question_id):
     """question 상세"""
-    print('1.question_id:{}'.format(question_id))
+    logging.info('1.question_id:{}'.format(question_id))
     # question = Question.objects.get(id=question_id)
     question = get_object_or_404(Question, pk=question_id)
-    print('2.question:{}'.format(question))
+    logging.info('2.question:{}'.format(question))
     context = {'question': question}
     return render(request, 'pybo/question_detail.html', context)
 
@@ -80,8 +81,9 @@ def detail(request, question_id):
 def index(request):
     """question list"""
     # list order create_date desc
+    logging.info('index 레벨로 출력')
     question_list = Question.objects.order_by('-create_date')  # order_by('-필드') desc,order_by('필드') asc
     # question_list = Question.objects.filter(id=99)
     context = {'question_list': question_list}
-    print('question_list:{}'.format(question_list))
+    logging.info('question_list:{}'.format(question_list))
     return render(request, 'pybo/question_list.html', context)
