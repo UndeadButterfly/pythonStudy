@@ -9,15 +9,48 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+from selenium import webdriver
+import time
+
+from selenium.webdriver.common.by import By
 
 
 class Crawling(unittest.TestCase):
     def setUp(self):
+        self.browser = webdriver.Firefox(executable_path='C:/BIG_AI0102/01_PYTHON/app/geckodriver.exe')
         print('setUp')
 
     def tearDown(self):
         print('tearDown')
+        # self.browser.quit()
 
+    def test_selenium(self):
+        # FireFoxz 웹 드라이버 객체에게 Get을 통하여 네이버의 http 요청을 하게 함
+        self.browser.get('http://127.0.0.1:8000/pybo/3/')
+        print(self.browser.title)
+        self.assertIn('Pybo', self.browser.title)
+
+        content_textarea = self.browser.find_element(By.ID, 'content')
+        content_textarea.send_keys('오늘은 안 즐거운 금요일!')
+
+        btn = self.browser.find_element(By.ID, 'submit_btn')
+        btn.click()  # 버튼 클릭
+        pass
+
+    @unittest.skip('naver login')
+    def test_naver(self):
+        self.browser.get('https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
+
+        id_textarea = self.browser.find_element(By.ID, 'id')
+        id_textarea.send_keys('highprime')
+        pw_textarea = self.browser.find_element(By.ID, 'pw')
+        pw_textarea.send_keys('fkdlzj28')
+
+        btn = self.browser.find_element(By.ID, 'log.login')
+        btn.click()  # 버튼 클릭
+        pass
+
+    @unittest.skip('')
     def test_zip(self):
         integers = [1, 2, 3]
         letters = ['a', 'b', 'c']
