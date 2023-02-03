@@ -18,6 +18,15 @@ class Crawling(unittest.TestCase):
     def tearDown(self):
         print('tearDown')
 
+    def test_zip(self):
+        integers = [1, 2, 3]
+        letters = ['a', 'b', 'c']
+        floats = [4.0, 8.0, 10.0]
+        zipped = zip(integers, letters, floats)
+        list_data = list(zipped)
+        print(list_data)
+        pass
+
     @unittest.skip('naver stock')
     def test_naver_stock(self):
         """주식 크롤링"""
@@ -60,6 +69,7 @@ class Crawling(unittest.TestCase):
             else:
                 print('접속 오류 response.status_code:{}'.format(response.status_code))
 
+    @unittest.skip('')
     def test_cgv(self):
         """http://www.cgv.co.kr/movies/?lt=1&ft=0"""
         url = 'http://www.cgv.co.kr/movies/?lt=1&ft=0'

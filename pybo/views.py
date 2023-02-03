@@ -114,7 +114,7 @@ def crawling_cgv(request):
             percent_list.append(percent[page].get_text())
             print('poster[{}]:{}'.format(page, poster[page].get('src')))
             poster_list.append(poster[page].get('src'))
-        context = {'title': title_list, 'percent': percent_list, 'poster': poster_list}
+        context = {'context': zip(title_list, percent_list, poster_list)}
     else:
         print('접속 오류 response.status_code:{}'.format(response.status_code))
     return render(request, 'pybo/crawling_cgv.html', context)

@@ -36,55 +36,65 @@
         <!--button end-->
     </div>
     <!--검색, 버튼 end-->
-</div>
-<!--table-->
-<div class="container table-responsive mt-5">
-    <table class="table table-striped table-hover table-bordered">
-        <thead>
-        <tr class="table-dark">
-            <th scope="col" class="text-center">No.</th>
-            <th scope="col" class="text-center">제목</th>
-            <th scope="col" class="text-center">예매율</th>
-            <th scope="col" class="text-center">포스터</th>
-            <th scope="col" class="text-center">조회수</th>
-        </tr>
-        </thead>
-        <tbody>
-        {%for t in title%}
-        <tr>
-            <td class="text-center">1</td>
-            <td class="text-start">{{t}}</td>
-            <td class="text-center">{{percent}}</td>
-            <td class="text-center"><img src="{{poster}}"></td>
-            <td class="text-end">1</td>
-        </tr>
+    <div class="row">
+        {%for con in context%}
+        <div class="card col-3 p-3 m-1" style="width: 18rem;">
+            <img src="{{con.2}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{con.0}}, {{con.1}}</h5>
+                <p class="card-text"></p>
+                <a href="#" class="btn btn-primary">예매하기</a>
+            </div>
+        </div>
         {%endfor%}
-        </tbody>
-    </table>
+    </div>
+    <!--table-->
+<!--    <div class="container table-responsive mt-5">-->
+<!--        <table class="table table-striped table-hover table-bordered">-->
+<!--            <thead>-->
+<!--            <tr class="table-dark">-->
+<!--                <th scope="col" class="text-center">No.</th>-->
+<!--                <th scope="col" class="text-center">제목</th>-->
+<!--                <th scope="col" class="text-center">예매율</th>-->
+<!--                <th scope="col" class="text-center">포스터</th>-->
+<!--                <th scope="col" class="text-center">조회수</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            {%for con in context%}-->
+<!--            <tr>-->
+<!--                <td class="text-center">1</td>-->
+<!--                <td class="text-start">{{con.0}}</td>-->
+<!--                <td class="text-center">{{con.1}}</td>-->
+<!--                <td class="text-center"><img src="{{con.2}}" height="300"></td>-->
+<!--                <td class="text-end">1</td>-->
+<!--            </tr>-->
+<!--            {%endfor%}-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+    <!--table end-->
+    <!--paging-->
+    <div class="d-grid gap-2 d-md-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!--paging-end-->
 </div>
-<!--table end-->
-
-<!--paging-->
-<div class="d-grid gap-2 d-md-flex justify-content-center">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
-<!--paging-end-->
-
 <!--container end-->
 {%endblock%}
