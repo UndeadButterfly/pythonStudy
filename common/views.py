@@ -6,6 +6,7 @@ from common.forms import UserForm
 
 # Create your views here.
 def signup(request):
+    """회원가입"""
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
