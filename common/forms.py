@@ -15,4 +15,5 @@ class UserForm(UserCreationForm):
 
     class Meta:
         model = User
+        # password1, password2 (비밇번호1을 제대로 입력했는지 확인)
         fields = ('username', 'password1', 'password2', 'email')

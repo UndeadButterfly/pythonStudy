@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -6,6 +7,9 @@ class Question(models.Model):
     subject = models.CharField(max_length=200)  # 글자수 제한
     content = models.TextField()  # 글자수 제한이 없는 경우
     create_date = models.DateTimeField()  # 날자 + 시간
+
+    # author 필드 추가 : 글쓴이
+    author = models.ForeignKey(User, on_delete=models.CASCADE)  # 회원 테이블에 사용자 정보가 삭제되면 Question 테이블 질문도 모두 삭제
 
     def __str__(self):
         return self.subject
@@ -19,5 +23,3 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.content
-
-
