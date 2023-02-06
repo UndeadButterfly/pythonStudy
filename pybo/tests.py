@@ -11,8 +11,9 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from selenium import webdriver
 import time
-
 from selenium.webdriver.common.by import By
+import pyperclip  # 클립보드를 쉽게 활용할 수 있게 해주는 모듈
+from selenium.webdriver.common.keys import Keys
 
 
 class Crawling(unittest.TestCase):
@@ -24,6 +25,35 @@ class Crawling(unittest.TestCase):
         print('tearDown')
         # self.browser.quit()
 
+    def test_clipboard_naver(self):
+        """clipboard 를 통한 naver login"""
+        self.browser.get("https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com")
+        user_id = 'highprime'
+        user_pw = 'fkdlzj28'
+
+        # id
+        id_textinput = self.browser.find_element(By.ID, 'id')
+        id_textinput.click()
+        # 클립보드로 copy
+        pyperclip.copy(user_id)
+        id_textinput.send_keys(Keys.CONTROL, 'v')  # 클립보드에서 id_textinput 으로 copy
+        time.sleep(1)
+
+        # password
+        pw_textinput = self.browser.find_element(By.ID, 'pw')
+        pw_textinput.click()
+        # 클립보드로 copy
+        pyperclip.copy(user_pw)
+        pw_textinput.send_keys(Keys.CONTROL, 'v')  # 클립보드에서 id_textinput 으로 copy
+        time.sleep(1)
+
+        #로그인 버튼
+        btn_login = self.browser.find_element(By.ID, 'log.login')
+        btn_login.click()
+
+        pass
+
+    @unittest.skip('')
     def test_selenium(self):
         # FireFoxz 웹 드라이버 객체에게 Get을 통하여 네이버의 http 요청을 하게 함
         self.browser.get('http://127.0.0.1:8000/pybo/3/')

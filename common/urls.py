@@ -5,9 +5,12 @@
 생성자 : highprime
 since 2023.01.09 Copyright (C) by KandJang All right reserved.
 """
+from django.urls import path
+from django.contrib.auth import views as auth_views
+from . import views
 
-def main():
-    pass
-    
-    
-main()
+app_name = 'common'
+urlpatterns = [
+    # django.contrib.auth 앱의 LoginView 클래스를 활용
+    path('login/', auth_views.LoginView.as_view(template_name='common/login.html'), name='login'),
+]
