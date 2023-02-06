@@ -14,17 +14,17 @@
         {%include 'form_errors.html'%}
         <!--form validation 기능 end-->
         <div class="mb-3 row">
-            <label for="user_id" class="col-form-label">사용자 ID</label>
+            <label for="username" class="col-form-label">사용자 ID</label>
             <div class="">
-                <input type="text" class="form-control" id="user_id" name="user_id"
-                       value="{{ form.user_id.value|default_if_none:'' }}">
+                <input type="text" class="form-control" id="username" name="username"
+                       value="{{ form.username.value|default_if_none:'' }}">
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="user_pw" class="col-form-label">비밀번호</label>
+            <label for="password" class="col-form-label">비밀번호</label>
             <div class="">
-                <input type="text" class="form-control" id="user_pw" name="user_pw"
-                       value="{{ form.user_pw.value|default_if_none:'' }}">
+                <input type="password" class="form-control" id="password" name="password"
+                       value="{{ form.password.value|default_if_none:'' }}">
             </div>
         </div>
         <div class="d-grid gap-2 mb-1 d-md-flex justify-content-start">

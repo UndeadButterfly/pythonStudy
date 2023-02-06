@@ -8,6 +8,18 @@
         <ul class="navbar-nav">
             <!--로그인-->
             <li class="nav-item">
+                <!--로그인 정보가 있는 경우-->
+                {%if user.is_authenticated%}<!--로그인 상태, is_anonymous: 로그아웃 상태-->
+                <a class="nav-link active" href="{%url 'common:logout'%}"
+                   aria-current="page">{{user.username}}(로그아웃)</a>
+                {%else%}
+                <a class="nav-link active" href="{%url 'common:login'%}" aria-current="page">로그인</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{%url 'common:signup'%}" aria-current="page">회원 가입</a>
+            </li>
+            {%endif%}
+            <li class="nav-item">
                 <a class="nav-link active" href="{%url 'pybo:boot_menu'%}" aria-current="page">임시 메뉴</a>
             </li>
             <li class="nav-item">
@@ -18,9 +30,6 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="{%url 'pybo:crawling_cgv'%}" aria-current="page">무비차트</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{%url 'common:login'%}" aria-current="page">로그인</a>
             </li>
         </ul>
     </div>
