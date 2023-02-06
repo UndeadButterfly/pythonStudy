@@ -1,0 +1,37 @@
+{%extends 'base.html'%}
+{%block content%}
+<!--container-->
+<div class="container">
+    <!--제목-->
+    <div class="text-start mb-5">
+        <h2 class="p-5">로그인</h2>
+    </div>
+    <!--제목 end-->
+    <!--등록 form-->
+    <form method="post" class="post-form my-3" action="{%url 'common:login'%}">
+        {%csrf_token%}
+        <!--form validation 기능-->
+        {%include 'form_errors.html'%}
+        <!--form validation 기능 end-->
+        <div class="mb-3 row">
+            <label for="user_id" class="col-form-label">사용자 ID</label>
+            <div class="">
+                <input type="text" class="form-control" id="user_id" name="user_id"
+                       value="{{ form.user_id.value|default_if_none:'' }}">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="user_pw" class="col-form-label">비밀번호</label>
+            <div class="">
+                <input type="text" class="form-control" id="user_pw" name="user_pw"
+                       value="{{ form.user_pw.value|default_if_none:'' }}">
+            </div>
+        </div>
+        <div class="d-grid gap-2 mb-1 d-md-flex justify-content-start">
+            <button type="submit" class="btn btn-primary btn-sm">로그인</button>
+        </div>
+    </form>
+    <!--등록 form end-->
+</div>
+<!--container end-->
+{%endblock%}
