@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseNotAllowed
@@ -27,9 +29,10 @@ def boot_list(request):
     return render(request, 'pybo/list.html')
 
 
+@login_required(login_url='common:login')
 def answer_create(request, question_id):
     """답변등록"""
-    logging.info('answer_create question_id:{}'.format(question_id))
+    # logging.info('answer_create question_id:{}'.format(question_id))
     question = get_object_or_404(Question, pk=question_id)
     if request.method == 'POST':
         form = AnswerForm(request.POST)
@@ -37,10 +40,11 @@ def answer_create(request, question_id):
             answer = form.save(commit=False)
             answer.question = question
             answer.create_date = timezone.now()
+            answer.author = request.user  # author 속성에 로그인 계정 저장
             answer.save()
             return redirect('pybo:detail', question_id=question_id)
     else:
-        return HttpResponseNotAllowed('Post만 가능합니다.')
+        form = AnswerForm()
 
     # form validation
     context = {'question': question, 'form': form}
@@ -49,20 +53,22 @@ def answer_create(request, question_id):
     # 연결모델명_set 연결데이터를 조회할 수 있다.
 
 
+@login_required(login_url='common:login')
 def question_create(request):
     """질문등록"""
 
-    logging.info('1.request.method:{}'.format(request.method))
+    # logging.info('1.request.method:{}'.format(request.method))
     if request.method == 'POST':
-        logging.info('2.question_create post')
+        # logging.info('2.question_create post')
         # 저장
         form = QuestionForm(request.POST)  # request.POST 데이터(subject, content 자동 생성)
-        logging.info('3.question_create post')
+        # logging.info('3.question_create post')
         # form(질문등록)이 유효하면
         if form.is_valid():
-            logging.info('4.form.is_valid():{}'.format(form.is_valid()))
+            # logging.info('4.form.is_valid():{}'.format(form.is_valid()))
             question = form.save(commit=False)  # subject, content 만 저장(commit 은 하지 않음)
             question.create_date = timezone.now()
+            question.author = request.user
             question.save()  # 날짜까지 생성해서 저장(Commit)
             return redirect('pybo:index')
     else:
@@ -73,10 +79,10 @@ def question_create(request):
 
 def detail(request, question_id):
     """question 상세"""
-    logging.info('1.question_id:{}'.format(question_id))
+    # logging.info('1.question_id:{}'.format(question_id))
     # question = Question.objects.get(id=question_id)
     question = get_object_or_404(Question, pk=question_id)
-    logging.info('2.question:{}'.format(question))
+    # logging.info('2.question:{}'.format(question))
     context = {'question': question}
     return render(request, 'pybo/question_detail.html', context)
 
@@ -84,11 +90,11 @@ def detail(request, question_id):
 def index(request):
     """question list"""
     # list order create_date desc
-    logging.info('index 레벨로 출력')
+    # logging.info('index 레벨로 출력')
 
     # 입력인자
     page = request.GET.get('page', '1')  # 페이지
-    logging.info('page:{}'.format(page))
+    # logging.info('page:{}'.format(page))
 
     question_list = Question.objects.order_by('-create_date')  # order_by('-필드') desc,order_by('필드') asc
     # paging
@@ -106,7 +112,7 @@ def index(request):
     # end_index
     # question_list = Question.objects.filter(id=99)
     context = {'question_list': page_obj}
-    logging.info('question_list:{}'.format(question_list))
+    # logging.info('question_list:{}'.format(question_list))
     return render(request, 'pybo/question_list.html', context)
 
 
@@ -137,3 +143,33 @@ def crawling_cgv(request):
     else:
         print('접속 오류 response.status_code:{}'.format(response.status_code))
     return render(request, 'pybo/crawling_cgv.html', context)
+
+
+@login_required(login_url='common:login')
+def question_modify(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    if request.user != question.author:
+        messages.error(request, '수정권한이 없습니다')
+        return redirect('pybo:detail', question_id=question.id)
+    if request.method == "POST":
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            question = form.save(commit=False)
+            logging.info(question.id)
+            question.modify_date = timezone.now()
+            question.save()
+            return redirect('pybo:detail', question_id=question.id)
+    else:
+        form = QuestionForm(instance=question)
+    context = {'form': form}
+    return render(request, 'pybo/question_form.html', context)
+
+
+@login_required(login_url='common:login')
+def question_delete(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    if request.user != question.author:
+        messages.error(request, '삭제권한이 없습니다')
+        return redirect('pybo:detail', question_id=question.id)
+    question.delete()
+    return redirect('pybo:index')

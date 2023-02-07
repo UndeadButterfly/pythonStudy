@@ -10,6 +10,7 @@
     <!--등록 form-->
     <form method="post" class="post-form my-3" action="{%url 'common:login'%}">
         {%csrf_token%}
+        <input type="hidden" name="next" value="{{next}}"> <!--로그인 성공 후 이동되는 URL-->
         <!--form validation 기능-->
         {%include 'form_errors.html'%}
         <!--form validation 기능 end-->

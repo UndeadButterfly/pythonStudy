@@ -21,4 +21,6 @@ urlpatterns = [
     path('boot/reg/', views.boot_reg, name='boot_reg'),
     # crawling
     path('crawling/cgv/', views.crawling_cgv, name='crawling_cgv'),
+    path('question/modify/<int:question_id>/', views.question_modify, name='question_modify'),
+    path('question/delete/<int:question_id>/', views.question_delete, name='question_delete'),
 ]
