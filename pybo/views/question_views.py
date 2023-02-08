@@ -10,23 +10,6 @@ from pybo.models import Question
 
 
 # Create your views here.
-
-
-def boot_menu(request):
-    """개발에 사용되는 임시메뉴"""
-    return render(request, 'pybo/menu.html')
-
-
-def boot_reg(request):
-    return render(request, 'pybo/reg.html')
-
-
-# bootstrap list
-def boot_list(request):
-    """bootstrap template"""
-    return render(request, 'pybo/list.html')
-
-
 @login_required(login_url='common:login')
 def question_create(request):
     """질문등록"""

@@ -10,7 +10,8 @@ class Question(models.Model):
     modify_date = models.DateTimeField(null=True, blank=True)
 
     # author 필드 추가 : 글쓴이
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_question')  # 회원 테이블에 사용자 정보가 삭제되면 Question 테이블 질문도 모두 삭제
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='author_question')  # 회원 테이블에 사용자 정보가 삭제되면 Question 테이블 질문도 모두 삭제
 
     #  추천인 추가
     voter = models.ManyToManyField(User, related_name='voter_question')
@@ -24,14 +25,13 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     content = models.TextField()  # 글자수 제한이 없는 경우
     create_date = models.DateTimeField()  # 날짜 + 시간
+    # 수정일시 추가
     modify_date = models.DateTimeField(null=True, blank=True)
 
     # author 필드 추가 : 글쓴이
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_answer')
 
     voter = models.ManyToManyField(User, related_name='voter_answer')
-
-
 
     # 입력필드에 null 허용하기
     # author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

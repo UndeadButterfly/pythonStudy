@@ -7,24 +7,9 @@ from pybo.forms import QuestionForm, AnswerForm
 from pybo.models import Question, Answer
 
 
+# ctrl + alt + o : import 정리
+
 # Create your views here.
-
-
-def boot_menu(request):
-    """개발에 사용되는 임시메뉴"""
-    return render(request, 'pybo/menu.html')
-
-
-def boot_reg(request):
-    return render(request, 'pybo/reg.html')
-
-
-# bootstrap list
-def boot_list(request):
-    """bootstrap template"""
-    return render(request, 'pybo/list.html')
-
-
 @login_required(login_url='common:login')
 def answer_create(request, question_id):
     """답변등록"""
@@ -51,10 +36,15 @@ def answer_create(request, question_id):
 
 @login_required(login_url='common:login')
 def answer_modify(request, answer_id):
+    # 1. answer id 에 해당되는 데이터 조회
     answer = get_object_or_404(Answer, pk=answer_id)
+
+    # 2. 수정 권한 체크 : 권한이 없는 경우 메세지 전달
     if request.user != answer.author:
         messages.error(request, '수정권한이 없습니다')
         return redirect('pybo:detail', question_id=answer.question.id)
+
+    # 3. POST : 수정
     if request.method == "POST":
         form = AnswerForm(request.POST, instance=answer)
         if form.is_valid():
@@ -63,6 +53,8 @@ def answer_modify(request, answer_id):
             answer.save()
             return redirect('{}#answer_{}'.format(resolve_url('pybo:detail', question_id=answer.question.id),
                                                   answer.id))
+
+    # 4. GET : 수정 form 전달
     else:
         form = QuestionForm(instance=answer)
     context = {'answer': answer, 'form': form}

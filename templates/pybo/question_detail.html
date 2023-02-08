@@ -31,12 +31,12 @@
             </div>
         </div>
         <div class="my-3 p-3">
-            <a href="javascript:void(0)" data-uri="{%url 'pybo:question_vote' question.id%}"
-               class="recommend btn btn-sm btn-outline-secondary">추천<span class="badge rounded-pill bg-success">{{question.voter.count}}</span></a>
+            <a class="recommend btn btn-sm btn-outline-secondary" data-uri="{%url 'pybo:question_vote' question.id%}"
+               href="javascript:void(0)">추천<span class="badge rounded-pill bg-success">{{question.voter.count}}</span></a>
             {%if request.user == question.author%}
-            <a href="{%url 'pybo:question_modify' question.id%}" class="btn btn-sm btn-outline-secondary">수정</a>
-            <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary"
-               data-uri="{% url 'pybo:question_delete' question.id  %}">삭제</a>
+            <a class="btn btn-sm btn-outline-secondary" href="{%url 'pybo:question_modify' question.id%}">수정</a>
+            <a class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'pybo:question_delete' question.id  %}"
+               href="javascript:void(0)">삭제</a>
             {%endif%}
         </div>
     </div>
@@ -60,30 +60,30 @@
             </div>
         </div>
         <div class="my-3 p-3">
-            <a href="javascript:void(0)" data-uri="{%url 'pybo:answer_vote' answer.id%}"
-               class="recommend btn btn-sm btn-outline-secondary">추천<span class="badge rounded-pill bg-success">{{answer.voter.count}}</span></a>
+            <a class="recommend btn btn-sm btn-outline-secondary" data-uri="{%url 'pybo:answer_vote' answer.id%}"
+               href="javascript:void(0)">추천<span class="badge rounded-pill bg-success">{{answer.voter.count}}</span></a>
             {%if request.user == answer.author%}
-            <a href="{%url 'pybo:answer_modify' answer.id%}" class="btn btn-sm btn-outline-secondary">수정</a>
-            <a href="#" data-uri="{%url 'pybo:answer_delete' answer.id%}"
-               class="delete btn btn-sm btn-outline-secondary">삭제</a>
+            <a class="btn btn-sm btn-outline-secondary" href="{%url 'pybo:answer_modify' answer.id%}">수정</a>
+            <a class="delete btn btn-sm btn-outline-secondary" data-uri="{%url 'pybo:answer_delete' answer.id%}"
+               href="#">삭제</a>
             {%endif%}
         </div>
     </div>
     {%endfor%}
     <!--답변 end-->
     <!--답변 등록-->
-    <form action="{%url 'pybo:answer_create' question.id %}" method="post" class="my-3" name="answer_form">
+    <form action="{%url 'pybo:answer_create' question.id %}" class="my-3" method="post" name="answer_form">
         {%csrf_token%}
         <!--form validation 기능-->
         {%include 'form_errors.html'%}
         <!--form validation 기능 end-->
         <div class="mb-3">
-            <label for="content" class="col-form-label">내용</label>
-            <textarea {%if not user.is_authenticated %} disabled {% endif %} name="content" id="content" cols="20"
-                      rows="10" class="form-control"></textarea>
+            <label class="col-form-label" for="content">내용</label>
+            <textarea %} %} class="form-control" cols="20" disabled endif id="content" name="content" not rows="10" user.is_authenticated
+                      {% {%if></textarea>
         </div>
         <!--        <input class="btn btn-primary btn-sm" type="button" value="답변등록" onclick="javascript:doSave();">-->
-        <input class="btn btn-primary btn-sm" type="submit" value="답변등록" id="submit_btn">
+        <input class="btn btn-primary btn-sm" id="submit_btn" type="submit" value="답변등록">
     </form>
     <!--답변 등록 end-->
     <script>
