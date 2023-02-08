@@ -42,6 +42,7 @@ def answer_modify(request, answer_id):
     # 2. 수정 권한 체크 : 권한이 없는 경우 메세지 전달
     if request.user != answer.author:
         messages.error(request, '수정권한이 없습니다')
+        # 수정 화면
         return redirect('pybo:detail', question_id=answer.question.id)
 
     # 3. POST : 수정
@@ -51,6 +52,7 @@ def answer_modify(request, answer_id):
             answer = form.save(commit=False)
             answer.modify_date = timezone.now()
             answer.save()
+            # 수정 화면
             return redirect('{}#answer_{}'.format(resolve_url('pybo:detail', question_id=answer.question.id),
                                                   answer.id))
 
