@@ -4,8 +4,6 @@ from django.shortcuts import render
 
 
 # Create your views here.
-
-
 def boot_menu(request):
     """개발에 사용되는 임시메뉴"""
     return render(request, 'pybo/menu.html')
