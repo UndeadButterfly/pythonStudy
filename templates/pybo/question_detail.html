@@ -45,13 +45,17 @@
             {%endif%}
         </div>
     </div>
+    <button class="btn btn-sm" style="margin-top:10px;background-color:#506EA5;color:white;" type="button"
+        onclick="location.href='/'">목록이동
+    </button>
+    <a href="{%url 'pybo:question_create'%}" class="btn btn-primary btn-sm" style="margin-top:10px;float:right">질문 등록</a>
     <!--질문 end-->
     <!--답변-->
     <h5 class="border-bottom py-2 my-3">{{question.answer_set.count}}개의 답변이 있습니다.</h5>
     {%for answer in question.answer_set.all%}
     <a id="answer_{{answer.id}}"></a>
     <div class="card my-1">
-        <div class="card-text p-5 pb-5">{{answer.content|mark}}</div>
+        <div class="card-text p-5 pb-1">{{answer.content|mark}}</div>
         <div class="d-flex justify-content-end" style="opacity:50%">
             {%if answer.modify_date%}
             <div class="badge bg-light text-dark p-2 text-start mx-3" style="border:2px solid grey">
@@ -93,9 +97,6 @@
             ></textarea>
         </div>
         <!--        <input class="btn btn-primary btn-sm" type="button" value="답변등록" onclick="javascript:doSave();">-->
-        <button class="btn btn-sm" style="margin-top:10px;background-color:#506EA5;color:white;" type="button"
-                onclick="location.href='/'">목록이동
-        </button>
         <input class="btn btn-primary btn-sm" id="submit_btn" type="submit" value="답변등록">
     </form>
     <!--답변 등록 end-->
