@@ -17,18 +17,22 @@
     <!-- 질문 py: 상하 패딩!-->
     <h2 class="border-bottom py-2">{{question.subject}}</h2>
     <div class="card my-3">
-        <div class="card-text p-2 pb-5">{{question.content|mark}}</div>
-        <div class="d-flex justify-content-end">
+        <div class="card-text p-5 pb-5">{{question.content|mark}}</div>
+        <div class="d-flex justify-content-end" style="opacity:50%">
             {%if question.modify_date%}
-            <div class="badge bg-light text-dark p-2 text-start mx-3">
-                <div class="mb-2">modified at</div>
+            <div class="badge bg-light text-dark p-2 text-start mx-3" style="border:2px solid grey">
+                <div class="mb-3">modified by <strong
+                        style="text-decoration:underline">{{question.author.username}}</strong></div>
                 <div>{{question.modify_date}}</div>
             </div>
-            {%endif%}
-            <div class="badge bg-light text-dark p-2 text-start">
-                <div class="mk-2 mb-3 text-decoration-underline">{{question.author.username}}</div>
+            {%else%}
+            <div class="badge bg-light text-dark p-2 text-start mx-3" style="border:2px solid grey">
+                <div class="mk-2 mb-3 text-decoration-underline">registered by
+                    <strong style="text-decoration:underline">{{question.author.username}}</strong>
+                </div>
                 <div>{{question.create_date}}</div>
             </div>
+            {%endif%}
         </div>
         <div class="my-3 p-3">
             <a class="recommend btn btn-sm btn-outline-secondary" data-uri="{%url 'pybo:question_vote' question.id%}"
@@ -47,18 +51,21 @@
     {%for answer in question.answer_set.all%}
     <a id="answer_{{answer.id}}"></a>
     <div class="card my-1">
-        <div class="card-text p-2 pb-5">{{answer.content|mark}}</div>
-        <div class="d-flex justify-content-end">
+        <div class="card-text p-5 pb-5">{{answer.content|mark}}</div>
+        <div class="d-flex justify-content-end" style="opacity:50%">
             {%if answer.modify_date%}
-            <div class="badge bg-light text-dark p-2 text-start mx-3">
-                <div class="mb-2">modified at</div>
+            <div class="badge bg-light text-dark p-2 text-start mx-3" style="border:2px solid grey">
+                <div class="mb-3">modified by <strong
+                        style="text-decoration:underline">{{answer.author.username}}</strong></div>
                 <div>{{answer.modify_date}}</div>
             </div>
-            {%endif%}
-            <div class="badge bg-light text-dark p-2 text-start">
-                <div class="mk-2 mb-3 text-decoration-underline">{{answer.author.username}}</div>
+            {%else%}
+            <div class="badge bg-light text-dark p-2 text-start mx-3" style="border:2px solid grey">
+                <div class="mk-2 mb-3">registered by <strong style="text-decoration:underline">{{answer.author.username}}</strong>
+                </div>
                 <div>{{answer.create_date}}</div>
             </div>
+            {%endif%}
         </div>
         <div class="my-3 p-3">
             <a class="recommend btn btn-sm btn-outline-secondary" data-uri="{%url 'pybo:answer_vote' answer.id%}"
@@ -79,13 +86,16 @@
         {%include 'form_errors.html'%}
         <!--form validation 기능 end-->
         <div class="mb-3">
-            <label class="col-form-label" for="content">내용</label>
+            <label class="col-form-label" for="content">답변 내용</label>
             <textarea
-                    {%if not user.is_authenticated%}disabled{%endif%} class="form-control" cols="20" id="content"
-                    name="content" rows="10"
+                    {%if not user.is_authenticated%}disabled{%endif%} class="form-control p-5" cols="20" id="content"
+                    name="content" rows="3"
             ></textarea>
         </div>
         <!--        <input class="btn btn-primary btn-sm" type="button" value="답변등록" onclick="javascript:doSave();">-->
+        <button class="btn btn-sm" style="margin-top:10px;background-color:#506EA5;color:white;" type="button"
+                onclick="location.href='/'">목록이동
+        </button>
         <input class="btn btn-primary btn-sm" id="submit_btn" type="submit" value="답변등록">
     </form>
     <!--답변 등록 end-->
@@ -100,7 +110,6 @@
                 form.content.focus();
                 return;
             }
-
             //서버로 전송
             form.submit;
         };
