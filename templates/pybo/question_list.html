@@ -30,6 +30,7 @@
             <th style="width:50%">제목</th>
             <th>글쓴이</th>
             <th>작성일</th>
+            <th>추천</th>
         </tr>
         </thead>
         <tbody>
@@ -47,6 +48,13 @@
             </td>
             <td>{{question.author.username}}</td> <!--글쓴이 추가-->
             <td>{{question.create_date|date:"Y-m-d"}}</td>
+            <td>
+                {%if question.voter.all.count > 0%}
+                <span class="badge rounded-pill bg-danger px-2">{{question.voter.count}}</span>
+                {%else%}
+                <span class="badge rounded-pill bg-secondary px-2">0</span>
+                {%endif%}
+            </td><!--좋아요/추천-->
         </tr>
         {%endfor%}
         {%else%}
@@ -86,7 +94,7 @@
             <a class="page-link" href="javascript:void(0)" data-page="{{page_number}}" style="font-weight:bold">{{page_number}}</a>
         </li>
         {%else%}
-        <li class="page-item active" aria-current="page">
+        <li class="page-item" aria-current="page">
             <a class="page-link" href="javascript:void(0)" data-page="{{page_number}}" style="font-weight:bold">{{page_number}}</a>
         </li>
         {%endif%}
@@ -134,5 +142,6 @@
         document.getElementById('page').value = 1;  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
         document.getElementById('searchForm').submit();
     });
+
 </script>
 {%endblock%}
