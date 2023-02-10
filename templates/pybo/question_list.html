@@ -26,9 +26,7 @@
                                                           value="{{ kw|default_if_none:'' }}"
                                                           placeholder="검색어">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="btn_search">
-                            조회
-                        </button>
+                        <button class="btn btn-outline-secondary" type="button" id="btn_search">조회</button>
                     </div>
                 </div>
             </div>
@@ -37,7 +35,15 @@
         <!--제목 end-->
     </div>
     <div class="container table-responsible mt-5">
-        <p>(총 {{ question_list.paginator.count }}개의 게시글이 검색되었습니다.)</p>
+        <p>
+            <label for="select_per_page">(총 {{ question_list.paginator.count }}개의 게시글이 검색되었습니다.)</label>
+            <select name="per_page" id="select_per_page" class="form-select-sm">
+                <option value="10" {% if per_page == '10' %} selected {% endif %}>10개씩 보기</option>
+                <option value="20" {% if per_page == '20' %} selected {% endif %}>20개씩 보기</option>
+                <option value="30" {% if per_page == '30' %} selected {% endif %}>30개씩 보기</option>
+                <option value="50" {% if per_page == '50' %} selected {% endif %}>50개씩 보기</option>
+            </select>
+        </p>
         <table class="table table-striped table-hover table-bordered">
             <thead>
             <tr class="text-center table-dark">
@@ -85,7 +91,8 @@
         <ul class="pagination justify-content-center">
             <!--첫페이지-->
             <li class="page-item">
-                <a class="page-link" href="?kw={{ kw|default_if_none:'' }}&page=1&div={{ div|default_if_none:'' }}"
+                <a class="page-link"
+                   href="?kw={{ kw|default_if_none:'' }}&page=1&div={{ div|default_if_none:'' }}&per_page={{ per_page|default_if_none:'' }}"
                    aria-label="&gt;">&laquo;</a>
             </li>
             <!--첫페이지 end-->
@@ -136,7 +143,7 @@
             <!--마지막 페이지-->
             <li class="page-item">
                 <a class="page-link"
-                   href="?kw={{ kw|default_if_none:'' }}&page={{ question_list.paginator.page_range.stop|sub:1 }}&div={{ div|default_if_none:'' }}"
+                   href="?kw={{ kw|default_if_none:'' }}&page={{ question_list.paginator.page_range.stop|sub:1 }}&div={{ div|default_if_none:'' }}&per_page={{ per_page|default_if_none:'' }}"
                    aria-label="&gt;">&raquo;</a>
             </li>
             <!--마지막 페이지 end-->
@@ -147,34 +154,39 @@
         <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
         <input type="hidden" id="page" name="page" value="{{ page }}">
         <input type="hidden" id="div" name="div" value="{{ div|default_if_none:'' }}">
+        <input type="hidden" id="per_page" name="per_page" value="{{ per_page|default_if_none:'' }}">
     </form>
     <!--container end-->
 {% endblock %}
 {% block script %}
     <script type="text/javascript">
-        function doRetrieve() {
+        function doRetrieve(page) { // page 변수 입력을 통해
             document.getElementById('kw').value = document.getElementById('search_kw').value;
-            document.getElementById('page').value = 1;  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
+            document.getElementById('page').value = page;
             document.getElementById('div').value = document.getElementById('search_div').value;
+            document.getElementById('per_page').value = document.getElementById('select_per_page').value;
             document.getElementById('searchForm').submit();
         }
 
         const page_elements = document.getElementsByClassName("page-link");
         Array.from(page_elements).forEach(function (element) {
             element.addEventListener('click', function () {
-                document.getElementById('page').value = this.dataset.page;
-                document.getElementById('searchForm').submit();
+                doRetrieve(this.dataset.page)
             });
         });
         const btn_search = document.getElementById("btn_search");
         btn_search.addEventListener('click', function () {
-            doRetrieve();
+            doRetrieve(1);
         });
         const search_kw = document.querySelector("#search_kw");
         search_kw.addEventListener("keyup", function (event) {
-            if (event.keyCode == 13) {
-                doRetrieve();
+            if (event.keyCode === 13) {
+                doRetrieve(1);
             }
+        });
+        const per_page = document.getElementById("per_page");
+        per_page.addEventListener("click", function () {
+            doRetrieve(1);
         })
     </script>
 {% endblock %}

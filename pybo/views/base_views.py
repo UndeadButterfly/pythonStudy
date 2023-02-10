@@ -25,6 +25,7 @@ def index(request):
     page = request.GET.get('page', '1')  # 페이지
     kw = request.GET.get('kw', '')
     div = request.GET.get('div', '')
+    per_page = request.GET.get('per_page', '10')
     # logging.info('page:{}'.format(page))
 
     question_list = Question.objects.order_by('-create_date')  # order_by('-필드') desc,order_by('필드') asc
@@ -50,7 +51,7 @@ def index(request):
                 Q(answer__author__username__icontains=kw)  # 답변 글쓴이 검색
             ).distinct()
     # paging
-    paginator = Paginator(question_list, 10)
+    paginator = Paginator(question_list, per_page)
     page_obj = paginator.get_page(page)
     # paginator.count : 전체 게시물 개수
     # paginator.per_page : 페이지 당 보여줄 게시물 개수
@@ -64,6 +65,6 @@ def index(request):
     # start_index : 현재 페이지 시작 번호
     # end_index : 현재 페이지 끝 번호
     # question_list = Question.objects.filter(id=99)
-    context = {'question_list': page_obj, 'page': page, 'kw': kw, 'div': div}
+    context = {'question_list': page_obj, 'page': page, 'kw': kw, 'div': div, 'per_page': per_page}
     # logging.info('question_list:{}'.format(question_list))
     return render(request, 'pybo/question_list.html', context)
