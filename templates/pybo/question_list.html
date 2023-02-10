@@ -56,10 +56,10 @@
             <td>{{question.author.username}}</td> <!--글쓴이 추가-->
             <td>{{question.create_date|date:"Y-m-d"}}</td>
             <td>
-                {%if question.voter.all.count > 0%}
+                {%if question.voter.all.count >= 3%} <!--추천 3개 이상만 빨갛게 표시-->
                 <span class="badge rounded-pill bg-danger px-2">{{question.voter.count}}</span>
                 {%else%}
-                <span class="badge rounded-pill bg-secondary px-2">0</span>
+                <span class="badge rounded-pill bg-secondary px-2">{{question.voter.count}}</span>
                 {%endif%}
             </td><!--좋아요/추천-->
         </tr>
