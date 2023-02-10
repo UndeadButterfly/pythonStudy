@@ -33,7 +33,8 @@ def index(request):
             Q(content__icontains=kw) |  # 내용 검색
             Q(answer__content__icontains=kw) |  # 답변 내용 검색
             Q(author__username__icontains=kw) |  # 질문 글쓴이 검색
-            Q(answer__author__username__icontains=kw)  # 답변 글쓴이 검색
+            Q(answer__author__username__icontains=kw) |  # 답변 글쓴이 검색
+            Q(id__icontains=kw)
         ).distinct()
     # paging
     paginator = Paginator(question_list, 10)
