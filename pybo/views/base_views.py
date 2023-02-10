@@ -24,18 +24,31 @@ def index(request):
     # 입력인자
     page = request.GET.get('page', '1')  # 페이지
     kw = request.GET.get('kw', '')
+    div = request.GET.get('div', '')
     # logging.info('page:{}'.format(page))
 
     question_list = Question.objects.order_by('-create_date')  # order_by('-필드') desc,order_by('필드') asc
     if kw:
-        question_list = question_list.filter(
-            Q(subject__icontains=kw) |  # 제목 검색
-            Q(content__icontains=kw) |  # 내용 검색
-            Q(answer__content__icontains=kw) |  # 답변 내용 검색
-            Q(author__username__icontains=kw) |  # 질문 글쓴이 검색
-            Q(answer__author__username__icontains=kw) |  # 답변 글쓴이 검색
-            Q(id__icontains=kw)
-        ).distinct()
+        if div == '10':
+            question_list = question_list.filter(
+                Q(subject__icontains=kw)  # 제목 검색
+            ).distinct()
+        elif div == '20':
+            question_list = question_list.filter(
+                Q(content__icontains=kw)  # 내용 검색
+            ).distinct()
+        elif div == '30':
+            question_list = question_list.filter(
+                Q(author__username__icontains=kw)  # 작성자 검색
+            ).distinct()
+        else:
+            question_list = question_list.filter(
+                Q(subject__icontains=kw) |  # 제목 검색
+                Q(content__icontains=kw) |  # 내용 검색
+                Q(answer__content__icontains=kw) |  # 답변 내용 검색
+                Q(author__username__icontains=kw) |  # 질문 글쓴이 검색
+                Q(answer__author__username__icontains=kw)  # 답변 글쓴이 검색
+            ).distinct()
     # paging
     paginator = Paginator(question_list, 10)
     page_obj = paginator.get_page(page)
@@ -51,6 +64,6 @@ def index(request):
     # start_index : 현재 페이지 시작 번호
     # end_index : 현재 페이지 끝 번호
     # question_list = Question.objects.filter(id=99)
-    context = {'question_list': page_obj, 'page': page, 'kw': kw}
+    context = {'question_list': page_obj, 'page': page, 'kw': kw, 'div': div}
     # logging.info('question_list:{}'.format(question_list))
     return render(request, 'pybo/question_list.html', context)
