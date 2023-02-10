@@ -41,13 +41,14 @@ def index(request):
     # paginator.count : 전체 게시물 개수
     # paginator.per_page : 페이지 당 보여줄 게시물 개수
     # paginator.page_range : 페이지 범위
-    # has_next
-    # has_previous
+    # number : 현재 페이지 번호
+    # has_next : 다음 페이지 유무
+    # has_previous : 이전 페이지 유무
     # has_other_pages
-    # next_page_number
-    # previous_page_number
-    # start_index
-    # end_index
+    # next_page_number : 다음 페이지 번호
+    # previous_page_number : 이전 페이지 번호
+    # start_index : 시작 페이지 번호
+    # end_index : 마지막 페이지 번호
     # question_list = Question.objects.filter(id=99)
     context = {'question_list': page_obj, 'page': page, 'kw': kw}
     # logging.info('question_list:{}'.format(question_list))
