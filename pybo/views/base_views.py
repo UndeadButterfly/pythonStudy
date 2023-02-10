@@ -47,8 +47,8 @@ def index(request):
     # has_other_pages
     # next_page_number : 다음 페이지 번호
     # previous_page_number : 이전 페이지 번호
-    # start_index : 시작 페이지 번호
-    # end_index : 마지막 페이지 번호
+    # start_index : 현재 페이지 시작 번호
+    # end_index : 현재 페이지 끝 번호
     # question_list = Question.objects.filter(id=99)
     context = {'question_list': page_obj, 'page': page, 'kw': kw}
     # logging.info('question_list:{}'.format(question_list))
