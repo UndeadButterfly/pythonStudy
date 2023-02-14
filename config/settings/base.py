@@ -14,7 +14,7 @@ from pathlib import Path
 import os  # logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # 로그인 성공 시 이동할 URL
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -136,47 +136,51 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugTrue',
         },
     },
-    # 형식정의
     'formatters': {
-        'format1': {'format': '[%(asctime)s] %(module)s -%(lineno)d %(levelname)s %(message)s',
-                    'datefmt': "%Y-%m-%d %H:%M:%S"},
-        'format2': {'format': '%(levelname)s %(message)s [%(name)s:%(lineno)s]'},
+        'django.server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[{server_time}] {message}',
+            'style': '{',
+        },
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
     },
     'handlers': {
-        # 파일저장
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/python_pybo.log'),
-            'encoding': 'UTF-8',
-            'maxBytes': 1024 * 1024 * 5,  # 5 MB
-            'backupCount': 5,
-            'formatter': 'format1',
-        },
-        # 콘솔(터미널)에 출력
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
-            'formatter': 'format1',
+        },
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django.server',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'file': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs/mysite.log',
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'standard',
         },
     },
     'loggers': {
-        # 종류
+        'django': {
+            'handlers': ['console', 'mail_admins', 'file'],
+            'level': 'INFO',
+        },
         'django.server': {
-            'handlers': ['file', 'console'],
+            'handlers': ['django.server'],
+            'level': 'INFO',
             'propagate': False,
-            'level': 'DEBUG',
         },
-        'django.request': {
-            'handlers': ['file', 'console'],
-            'propagate': False,
-            'level': 'DEBUG',
-        },
-        '': {
-            'level': 'DEBUG',
-            'handlers': ['file', 'console'],
-            'propagate': True,
-        },
-    },
+    }
 }
