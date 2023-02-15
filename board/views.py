@@ -18,7 +18,6 @@ def index(request):
     kw = request.GET.get('kw', '')
     div = request.GET.get('div', '')
     per_page = request.GET.get('per_page', '10')
-    # logging.info('page:{}'.format(page))
 
     board_list = Board.objects.order_by('-create_date')  # order_by('-필드') desc,order_by('필드') asc
     if kw:
@@ -45,16 +44,12 @@ def index(request):
     page_obj = paginator.get_page(page)
 
     context = {'board_list': page_obj, 'page': page, 'kw': kw, 'div': div, 'per_page': per_page}
-    # logging.info('question_list:{}'.format(question_list))
     return render(request, 'board/board_list.html', context)
 
 
 def detail(request, board_id):
-    """question 상세"""
-    # logging.info('1.question_id:{}'.format(question_id))
-    # question = Question.objects.get(id=question_id)
+    """board 상세"""
     board = get_object_or_404(Board, pk=board_id)
-    # logging.info('2.question:{}'.format(question))
     context = {'board': board}
     return render(request, 'board/board_detail.html', context)
 
@@ -66,10 +61,8 @@ def create(request):
     if request.method == 'POST':
         # 저장
         form = BoardForm(request.POST)  # request.POST 데이터(subject, content 자동 생성)
-        # logging.info('3.question_create post')
         # form(질문등록)이 유효하면
         if form.is_valid():
-            # logging.info('4.form.is_valid():{}'.format(form.is_valid()))
             board = form.save(commit=False)  # subject, content 만 저장(commit 은 하지 않음)
             board.create_date = timezone.now()
             board.author = request.user

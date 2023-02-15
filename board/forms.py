@@ -13,7 +13,7 @@ from board.models import Board
 class BoardForm(forms.ModelForm):
     class Meta:
         model = Board  # 사용할 Question model
-        fields = ['subject', 'content']  # QuestionForm 사용할 question model 의 속성
+        fields = ['subject', 'content']  # BoardForm 사용할 board model 의 속성
         widgets = {
             # class = "form-control"
             'subject': forms.TextInput(attrs={'class': 'form-control'}),
@@ -23,4 +23,3 @@ class BoardForm(forms.ModelForm):
             'subject': '제목',
             'content': '내용',
         }
-
