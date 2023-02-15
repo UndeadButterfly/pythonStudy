@@ -12,7 +12,7 @@ from board.models import Board
 
 class BoardForm(forms.ModelForm):
     class Meta:
-        model = Board  # 사용할 Question model
+        model = Board  # 사용할 Board model
         fields = ['subject', 'content']  # BoardForm 사용할 board model 의 속성
         widgets = {
             # class = "form-control"
