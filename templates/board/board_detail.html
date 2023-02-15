@@ -1,0 +1,66 @@
+{%extends 'base.html'%}
+{%load pybo_filter%}
+{%block content%}
+<!--container-->
+<div class="container">
+    <!--message 표시-->
+    {%if messages%}
+    <div class="alert alert-danger my-3" role="alert">
+        {%for message in messages%}
+        <strong>{{message.tags}}</strong>
+        <ul>
+            <li>{{message.message}}</li>
+        </ul>
+        {%endfor%}
+    </div>
+    {%endif%}
+    <!-- 질문 py: 상하 패딩!-->
+    <h2 class="border-bottom py-2">{{board.subject}}</h2>
+    <div class="card my-3">
+        <div class="card-text p-5 pb-5">{{board.content|mark}}</div>
+        <div class="d-flex justify-content-end" style="opacity:50%">
+            {%if board.modify_date%}
+            <div class="badge bg-light text-dark p-2 text-start mx-3" style="border:2px solid grey">
+                <div class="mb-3">modified by <strong
+                        style="text-decoration:underline">{{board.author.username}}</strong></div>
+                <div>{{board.modify_date}}</div>
+            </div>
+            {%else%}
+            <div class="badge bg-light text-dark p-2 text-start mx-3" style="border:2px solid grey">
+                <div class="mk-2 mb-3 text-decoration-underline">registered by
+                    <strong style="text-decoration:underline">{{board.author.username}}</strong>
+                </div>
+                <div>{{board.create_date}}</div>
+            </div>
+            {%endif%}
+        </div>
+        <div class="my-3 p-3">
+            {%if request.user == board.author%}
+            <a class="btn btn-sm btn-outline-secondary" href="{%url 'board:board_modify' board.id%}">수정</a>
+            <a class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'board:board_delete' board.id  %}"
+               href="javascript:void(0)">삭제</a>
+            {%endif%}
+        </div>
+    </div>
+    <button class="btn btn-sm" style="margin-top:10px;background-color:#506EA5;color:white;" type="button"
+        onclick="location.href='../'">목록이동
+    </button>
+    <a href="{%url 'board:board_create'%}" class="btn btn-primary btn-sm" style="margin-top:10px;float:right">게시글 등록</a>
+    <!--질문 end-->
+    <!--답변 등록 end-->
+</div>
+<!--container end-->
+{%endblock%}
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+<!--const delete_elements = document.querySelectorAll(".delete");-->
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
+{% endblock %}
